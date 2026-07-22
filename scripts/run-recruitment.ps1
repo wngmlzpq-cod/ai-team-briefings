@@ -31,6 +31,90 @@ $prompt = @"
 단순 생산직, 단순 조립직, 영업 중심 직무, 사용자 경력과 연관성이 낮은
 IT 개발자 직무는 제외하세요.
 
+[필수 검색 채널 및 우선순위]
+
+LinkedIn Jobs를 반드시 별도 검색하세요. 다른 사이트 검색만으로 작업을 끝내지 마세요.
+
+LinkedIn에서는 다음 직무명을 한국어와 영어로 각각 검색하세요.
+
+- Electrical Engineer / 전기 엔지니어
+- Electrical Design Engineer / 전기설계 엔지니어
+- Electrical & Instrumentation Engineer / 전기·계장 엔지니어
+- Automation Engineer / 자동화 엔지니어
+- Control Engineer / 제어 엔지니어
+- Commissioning Engineer / 시운전·커미셔닝 엔지니어
+- Field Service Engineer / 필드 서비스 엔지니어
+- Marine Engineer / 선박 엔지니어
+- Marine Electrical Engineer / 선박 전기 엔지니어
+- Shipbuilding Engineer / 조선 엔지니어
+- Performance Engineer / 성능 엔지니어
+- Energy Efficiency Engineer / 에너지 효율 엔지니어
+- Technical Support Engineer / 기술지원 엔지니어
+
+검색 지역은 대한민국 전체를 대상으로 하되 다음 지역을 우선 확인하세요.
+
+- 부산
+- 경남
+- 거제
+- 창원
+- 울산
+- 서울·경기
+- 해외 또는 외국계 기업의 한국 근무 직무
+
+WebSearch에서는 다음과 같은 LinkedIn 전용 검색도 반드시 수행하세요.
+
+site:linkedin.com/jobs/view "Electrical Engineer" Korea
+site:linkedin.com/jobs/view "Commissioning Engineer" Korea
+site:linkedin.com/jobs/view "Field Service Engineer" Korea
+site:linkedin.com/jobs/view "Marine Engineer" Korea
+site:linkedin.com/jobs/view "Marine Electrical Engineer" Korea
+site:linkedin.com/jobs/view "Shipbuilding Engineer" Korea
+site:linkedin.com/jobs/view "Performance Engineer" Korea
+site:linkedin.com/jobs/view "전기 엔지니어" 대한민국
+site:linkedin.com/jobs/view "시운전 엔지니어" 대한민국
+
+LinkedIn에서 찾은 공고는 반드시 다음 항목을 확인하세요.
+
+- 회사명
+- 정확한 직무명
+- 근무지역
+- 게시일 또는 등록 시점
+- 지원 마감일
+- 경력 요구조건
+- 영어 요구 수준
+- LinkedIn 공고 URL
+- 회사 공식 채용 페이지 URL
+- 현재 지원 가능 여부
+
+LinkedIn 페이지가 로그인이나 자바스크립트 문제로 열리지 않을 경우에는
+확인하지 못한 정보를 추정하거나 만들어내지 마세요.
+
+그 경우 다음 순서로 재확인하세요.
+
+1. 회사 공식 채용 홈페이지
+2. 회사명과 직무명을 이용한 별도 웹 검색
+3. 잡코리아·사람인·원티드 등 다른 채용 플랫폼
+4. 확인할 수 없으면 "LinkedIn 검색 결과에서 발견했으나 상세 검증 필요"라고 표시
+
+LinkedIn에서 현재 지원 가능한 유효 공고가 있으면 최소 3건을 우선 정리하세요.
+유효한 공고가 없으면 억지로 채우지 말고
+"LinkedIn에서 현재 검증 가능한 신규 공고 없음"이라고 명확하게 기록하세요.
+
+[사용자 적합도 평가]
+
+다음 경험과 연결되는 공고를 높은 적합도로 평가하세요.
+
+- 전기차 충전시설 설계 및 시공관리 경력
+- 선박 시운전 및 커미셔닝 경험
+- 선박 성능 모니터링 시스템 HS4 SPMS 경험
+- SFOC 및 선박 성능지표 계산 경험
+- VDR, IAS, CAMS 등 선박 시스템 데이터 연동 경험
+- Python, 데이터 분석, 성능 계산 로직 경험
+- 전기공학과 야간 재학
+- 외국계 선박엔진·전기 엔지니어로의 경력 확장 가능성
+
+단순 생산직, 단순 조립직, 영업 중심 직무 및 관련 없는 소프트웨어 개발직은 제외하세요.
+
 [자동 실행 원칙]
 
 - 이 작업은 사용자가 지켜보지 않는 비대화형 자동 실행입니다.
@@ -59,6 +143,13 @@ IT 개발자 직무는 제외하세요.
 - 우대조건:
 - 필요기술:
 - 출처: (URL, 확인 안 되면 "확인 필요")
+- 출처 플랫폼: (LinkedIn/사람인/잡코리아/원티드/기업 홈페이지)
+- 게시일:
+- LinkedIn URL: (해당 없으면 "해당없음")
+- 공식 채용 URL: (확인되지 않으면 "확인 필요")
+- 현재 지원 가능 여부: 지원 가능 / 마감 / 확인 필요
+- 사용자 적합도: 높음 / 보통 / 낮음
+- 적합도 근거:
 
 (공고 수만큼 항목 반복)
 "@
