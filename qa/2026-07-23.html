@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Team Daily Dashboard — 2026-07-23</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card-bg: #ffffff;
+    --border: #dde1e6;
+    --text: #1f2430;
+    --muted: #5b6472;
+    --pass: #1e8e5a;
+    --pass-bg: #e6f5ee;
+    --partial: #b4790e;
+    --partial-bg: #fdf1dc;
+    --review: #c23b3b;
+    --review-bg: #fbe6e6;
+    --unknown: #5b5f70;
+    --unknown-bg: #ececf1;
+    --link: #1a56b0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 0 40px 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Malgun Gothic", "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+    line-height: 1.55;
+  }
+  header {
+    background: #1c2333;
+    color: #fff;
+    padding: 22px 16px 26px 16px;
+  }
+  header h1 {
+    margin: 0 0 6px 0;
+    font-size: 1.4rem;
+  }
+  header .meta {
+    font-size: 0.92rem;
+    color: #c7cde0;
+    margin: 2px 0;
+  }
+  .overall-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    background: var(--unknown-bg);
+    color: var(--unknown);
+  }
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 14px;
+  }
+  section {
+    margin-top: 26px;
+  }
+  h2 {
+    font-size: 1.15rem;
+    border-left: 5px solid #1c2333;
+    padding-left: 10px;
+    margin-bottom: 12px;
+  }
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  @media (max-width: 640px) {
+    .status-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .status-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .status-card .team {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+  .badge.pass { background: var(--pass-bg); color: var(--pass); }
+  .badge.partial { background: var(--partial-bg); color: var(--partial); }
+  .badge.review { background: var(--review-bg); color: var(--review); }
+  .badge.unknown { background: var(--unknown-bg); color: var(--unknown); }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .warn-box {
+    background: #fff4e5;
+    border: 1px solid #eab26b;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    font-size: 0.92rem;
+  }
+  .warn-box.critical {
+    background: var(--review-bg);
+    border-color: var(--review);
+  }
+  .no-report-box {
+    background: var(--unknown-bg);
+    border: 1px dashed #9aa0ae;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    color: var(--unknown);
+  }
+  ul.action-list {
+    margin: 0;
+    padding-left: 20px;
+  }
+  ul.action-list li {
+    margin-bottom: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    background: var(--card-bg);
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 7px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #eef0f4;
+    font-size: 0.82rem;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 8px;
+  }
+  .econ-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 640px) {
+    .econ-cards { grid-template-columns: 1fr; }
+  }
+  .econ-card h3 {
+    margin: 0 0 6px 0;
+    font-size: 0.98rem;
+  }
+  .econ-card .num {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  .econ-card .change-up { color: var(--pass); }
+  .econ-card .change-down { color: var(--review); }
+  .tag-ref {
+    display: inline-block;
+    background: var(--unknown-bg);
+    color: var(--unknown);
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  a { color: var(--link); word-break: break-all; }
+  .filelinks a {
+    display: inline-block;
+    margin: 3px 10px 3px 0;
+  }
+  footer {
+    max-width: 960px;
+    margin: 30px auto 0 auto;
+    padding: 0 14px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI-Team Daily Dashboard</h1>
+  <div class="meta">기준 날짜: 2026-07-23 (목)</div>
+  <div class="meta">최종 업데이트: 2026-07-23 00:19</div>
+  <div class="overall-badge">전체 판정: 검증 불가 — 4개 팀 중 3개 팀 오늘자 보고서 미생성</div>
+</header>
+
+<main>
+
+<section>
+  <h2>팀별 상태</h2>
+  <div class="status-grid">
+    <div class="status-card">
+      <div class="team">채용분석팀</div>
+      <span class="badge unknown">검증 불가</span>
+    </div>
+    <div class="status-card">
+      <div class="team">청년지원팀</div>
+      <span class="badge partial">부분 통과</span>
+    </div>
+    <div class="status-card">
+      <div class="team">경제연구팀</div>
+      <span class="badge unknown">검증 불가</span>
+    </div>
+    <div class="status-card">
+      <div class="team">학습팀</div>
+      <span class="badge unknown">검증 불가</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>오늘 반드시 확인할 내용</h2>
+  <div class="card">
+    <ul class="action-list">
+      <li><strong>[확인 필요]</strong> 채용분석팀·경제연구팀·학습팀의 2026-07-23 브리핑 자동화가 정상 실행되었는지 확인하세요 (오늘자 파일이 아직 생성되지 않음).</li>
+      <li><strong>[검증 경고]</strong> 청년지원팀 — 서울시 청년수당 출처 링크가 오류 페이지(errorAccess.html)로 연결됩니다. 원문 확인 불가 상태가 어제부터 계속되고 있습니다.</li>
+      <li><strong>[검증 경고]</strong> 청년지원팀 — 거제시 청년 월세 지원사업 1차 신청(2026-03-30~05-29)은 이미 마감되었습니다. 2차 모집 여부는 거제시청에 직접 확인이 필요합니다.</li>
+      <li><strong>[참고: 어제 자료]</strong> 채용분석팀 — 한화오션 계장설계 공고는 근무지역 서술 변경(거제→서울) 및 접근불가 출처 기반 경력요건 서술 문제가 미해결 상태입니다.</li>
+      <li><strong>[확인 필요]</strong> 학습팀 오늘자 학습 콘텐츠가 없습니다. 자동화 확인 후 생성이 필요합니다.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>1. 채용분석팀</h2>
+  <div class="no-report-box">
+    ⚠ 오늘자(2026-07-23) 보고서가 생성되지 않았습니다. 가장 최근 보고서는 2026-07-22 작성본입니다.
+  </div>
+  <p class="tag-ref" style="margin-top:10px;">참고용 — 2026-07-22 최신 보고서 데이터 (오늘 데이터 아님)</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>회사명</th><th>직무명</th><th>근무지역</th><th>마감일</th><th>사용자 적합도</th><th>검증 상태</th><th>공식 공고 링크</th></tr>
+    <tr>
+      <td>Black &amp; Veatch</td><td>Electrical Systems Commissioning Engineer</td><td>경남 거제</td><td>명시 없음(상시 추정)</td><td>보통</td><td>확인됨 (공식 채용페이지 원문 대조)</td>
+      <td><a href="https://careers.bv.com/job/Geoji-si-Electrical-Systems-Commissioning-Engineer/1407257033/" target="_blank" rel="noopener">공고 링크</a></td>
+    </tr>
+    <tr>
+      <td>Black &amp; Veatch</td><td>I&amp;C System Commissioning Engineer</td><td>경남 거제</td><td>명시 없음(12개월 계약)</td><td>보통</td><td>확인됨 (공식 채용페이지 원문 대조)</td>
+      <td><a href="https://careers.bv.com/job/Geoji-si-I&C-System-Commissioning-Engineer/1416636633/" target="_blank" rel="noopener">공고 링크</a></td>
+    </tr>
+    <tr>
+      <td>Black &amp; Veatch</td><td>Electrical Supervisor - Pre-Commissioning &amp; Commissioning</td><td>경남 거제</td><td>명시 없음(12개월 계약)</td><td>낮음~보통</td><td>확인됨 (공식 채용페이지 원문 대조)</td>
+      <td><a href="https://careers.bv.com/job/Geoji-si-Electrical-Supervisor-Pre-Commissioning-&-Commissioning/1416636133/" target="_blank" rel="noopener">공고 링크</a></td>
+    </tr>
+    <tr>
+      <td>한화오션</td><td>설계 경력사원 - E&amp;I사업부 계장설계</td><td>서울 (⚠ 이전 버전과 서술 상이)</td><td>확인 필요 (404/접근 제한)</td><td>낮음</td><td class="warn">⚠ 확인 필요 — 근무지역 변경 미설명, 경력요건 근거 불명확</td>
+      <td><a href="https://recruit-hanwhaocean.com/ko/2026newrecruits" target="_blank" rel="noopener">채용 페이지</a></td>
+    </tr>
+    <tr>
+      <td>HD현대중공업</td><td>26년 상반기 경력공채 (직무 확인 필요)</td><td>확인 필요</td><td>확인 필요</td><td>확인 필요</td><td>⚠ 확인 필요 — 세션 기반 페이지 접근 제한</td>
+      <td><a href="https://recruit.hd.com/kr/mainLayout/applyDetail/246711" target="_blank" rel="noopener">채용 페이지</a></td>
+    </tr>
+    <tr>
+      <td>HD현대일렉트릭</td><td>경력사원 수시채용</td><td>확인 필요</td><td>상시채용 추정</td><td>확인 필요</td><td>⚠ 확인 필요</td>
+      <td><a href="https://www.hd-hyundaielectric.com/elect/ko/recruit/talent.jsp" target="_blank" rel="noopener">채용 페이지</a></td>
+    </tr>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>2. 청년지원팀</h2>
+  <p class="tag-ref">검증 대상: youth-support/2026-07-22.md (1일 전 작성, 7일 이내 정상)</p>
+  <div class="warn-box critical">
+    ⚠ 서울시 청년수당 출처 링크가 오류 페이지(seoul.go.kr/common/errorAccess.html)로 연결됩니다. 원문 미확인 상태입니다.
+  </div>
+  <div class="warn-box">
+    ⚠ 거제시 청년 월세 지원사업 1차 신청기간(2026-03-30~05-29)이 이미 종료되었습니다. 보고서 요약의 "현재 바로 신청 가능"이라는 표현은 이 항목에 한해 재검토가 필요합니다.
+  </div>
+  <div class="table-wrap">
+  <table>
+    <tr><th>정책명</th><th>지역</th><th>현재 신청 가능</th><th>서울 이직·전입 시</th><th>신청 마감일</th><th>검증 상태</th><th>공식 링크</th></tr>
+    <tr><td>거제시 청년 월세 지원사업</td><td>거제</td><td>⚠ 1차 마감(요약과 상충)</td><td>불가</td><td>확인 필요(1차 3.30~5.29 종료, 2차 미확인)</td><td>⚠ 확인 필요</td><td><a href="https://www.geoje.go.kr/index.geoje?menuCd=DOM_000008908015000000" target="_blank" rel="noopener">거제시청</a></td></tr>
+    <tr><td>거제시 청년 스펙-UP 지원</td><td>거제</td><td>가능</td><td>확인 필요</td><td>2026.1.1.~12.10.</td><td>확인 필요(소득기준)</td><td><a href="https://www.servedream.com/service/537000001436" target="_blank" rel="noopener">모두의혜택</a></td></tr>
+    <tr><td>거제시 장학생 선발</td><td>거제</td><td>가능</td><td>확인 필요</td><td>부문별 상이(2/5/6월)</td><td>확인 필요(야간대학 해당여부)</td><td><a href="https://www.newsfreezone.co.kr/news/articleView.html?idxno=670127" target="_blank" rel="noopener">뉴스프리존</a></td></tr>
+    <tr><td>모다드림 청년통장</td><td>경남</td><td>가능</td><td>확인 필요</td><td>확인 필요</td><td>확인 필요(재직 요건)</td><td><a href="https://youth.gyeongnam.go.kr/youth/menu.es?mid=a11308000000" target="_blank" rel="noopener">경남 청년정보플랫폼</a></td></tr>
+    <tr><td>경남 청년 구직활동수당(드림카드)</td><td>경남</td><td>가능</td><td>불가(취업 시 자격 상실)</td><td>확인 필요</td><td>확인 필요(재학생 제외 여부)</td><td><a href="https://www.gyeongnam.go.kr/mydata/menu.es?mid=a11101000000" target="_blank" rel="noopener">경남청</a></td></tr>
+    <tr><td>경상남도장학회 장학금</td><td>경남</td><td>가능</td><td>불가</td><td>확인 필요</td><td>확인 필요(야간대학 해당여부)</td><td><a href="https://youth.gyeongnam.go.kr/youth/menu.es?mid=a11203000000" target="_blank" rel="noopener">경남 청년정보플랫폼</a></td></tr>
+    <tr><td>국민취업지원제도</td><td>전국</td><td>가능</td><td>가능</td><td>상시</td><td>확인 필요(정확한 공고 링크)</td><td><a href="https://www.work24.go.kr" target="_blank" rel="noopener">고용24</a></td></tr>
+    <tr><td>청년일자리도약장려금(개인)</td><td>전국(비수도권 전용)</td><td>조건부 가능</td><td>⚠ 불가(수도권 취업 시 개인지원 없음)</td><td>상시</td><td>확인됨</td><td><a href="https://www.moel.go.kr/news/notice/noticeView.do?bbs_seq=20260100030" target="_blank" rel="noopener">고용노동부</a></td></tr>
+    <tr><td>국민내일배움카드</td><td>전국</td><td>가능</td><td>가능</td><td>상시</td><td>확인 필요(재학생 학년 기준)</td><td><a href="https://www.work24.go.kr" target="_blank" rel="noopener">고용24</a></td></tr>
+    <tr><td>서울시 청년수당</td><td>서울</td><td>불가</td><td>가능(전입 후)</td><td>연 2~3회(예: 3.6~3.13)</td><td>🔴 오류(출처 링크 접근 불가)</td><td><a href="https://youth.seoul.go.kr/bbs/view.do?key=2303300002&pstSn=2603030006&sc_bbsCtgrySn=2304110001" target="_blank" rel="noopener">청년몽땅정보통</a></td></tr>
+    <tr><td>서울시 청년월세지원</td><td>서울</td><td>불가</td><td>가능(전입 후)</td><td>확인 필요</td><td>미확인</td><td><a href="https://housing.seoul.go.kr/site/main/board/notice/12667" target="_blank" rel="noopener">서울주거포털</a></td></tr>
+    <tr><td>서울시 청년 임차보증금 이자지원</td><td>서울</td><td>불가</td><td>가능(전입 후)</td><td>상시</td><td>미확인</td><td><a href="https://youth.seoul.go.kr/infoData/plcyInfo/view.do?plcyBizId=R2024032020863&key=2309150002" target="_blank" rel="noopener">청년몽땅정보통</a></td></tr>
+    <tr><td>서울시 부동산 중개보수·이사비 지원</td><td>서울</td><td>불가</td><td>가능(전입신고 후)</td><td>연 2회(상반기 ~4.14)</td><td>미확인</td><td><a href="https://news.seoul.go.kr/gov/archives/576989" target="_blank" rel="noopener">서울시 공고</a></td></tr>
+    <tr><td>서울시 취업날개 서비스</td><td>서울</td><td>불가</td><td>가능(전입 후)</td><td>상시</td><td>확인 필요(면접단계 이용여부)</td><td><a href="https://job.seoul.go.kr/hmpg/spct/ewif/ewifInfo.do" target="_blank" rel="noopener">서울 일자리포털</a></td></tr>
+    <tr><td>서울 미래 청년 일자리(점프업)</td><td>서울</td><td>불가</td><td>가능(전입 후, 미취업 요건)</td><td>2026.5.18.~5.31.(회차별)</td><td>미확인</td><td><a href="https://news.seoul.go.kr/gov/archives/577865" target="_blank" rel="noopener">서울시 공고</a></td></tr>
+    <tr><td>서울시 기술교육원 직업훈련</td><td>서울</td><td>불가</td><td>가능(전입 후)</td><td>상반기 5~6월 모집</td><td>미확인</td><td><a href="https://www.sitedu.or.kr/" target="_blank" rel="noopener">서울시 기술교육원</a></td></tr>
+    <tr><td>중기청 전월세보증금대출</td><td>전국</td><td>🔴 신규 신청 중단</td><td>신규 신청 중단</td><td>해당 없음(2025.1.1. 중단)</td><td>확인됨(중단 사실)</td><td><a href="https://www.banksalad.com/articles/%EC%A4%91%EC%86%8C%EA%B8%B0%EC%97%85-%EC%B2%AD%EB%85%84%EC%9D%B4%EB%9D%BC%EB%A9%B4-%EB%86%93%EC%B9%98%EC%A7%80-%EB%A7%90%EC%95%84%EC%95%BC%ED%95%A0-%EC%A0%84%EC%84%B8%EB%8C%80%EC%B6%9C" target="_blank" rel="noopener">뱅크샐러드 정리글</a></td></tr>
+    <tr><td>청년미래적금</td><td>전국(추정)</td><td>가능(추정)</td><td>가능(추정)</td><td>가입자격조회 6.22~7.3</td><td>확인 필요(거주지 요건 미명시)</td><td><a href="https://www.tossbank.com/articles/youth-grow-up-account" target="_blank" rel="noopener">토스뱅크 안내</a></td></tr>
+  </table>
+  </div>
+  <p style="font-size:0.85rem;color:var(--muted);margin-top:8px;">※ 전일 QA에서 "거제시 청년주택 임차보증금 이자 지원사업(2026-08-05 마감 추정)"이 보고서에 누락되었을 가능성이 지적되었으며, 오늘도 파일 변경이 없어 동일하게 확인이 필요합니다.</p>
+</section>
+
+<section>
+  <h2>3. 경제연구팀</h2>
+  <div class="no-report-box">
+    ⚠ 오늘자(2026-07-23) 보고서가 생성되지 않았습니다. 가장 최근 보고서는 2026-07-22 작성본입니다.
+  </div>
+  <p class="tag-ref" style="margin-top:10px;">참고용 — 2026-07-22 최신 보고서 데이터 (오늘 데이터 아님)</p>
+  <div class="econ-cards">
+    <div class="card econ-card">
+      <h3>한국은행 기준금리</h3>
+      <div class="num">2.75%</div>
+      <div>이전: 2.50% · <span class="change-up">▲ +0.25%p (3년 6개월 만 인상)</span></div>
+      <div style="margin-top:6px;">의미: 물가상승률(6월 CPI 3.2%)이 목표치를 상회해 긴축 전환. 대출·저축 금리에 영향 가능.</div>
+      <div style="margin-top:6px;font-size:0.82rem;">출처: <a href="https://m.joseilbo.com/news/view.htm?newsid=572037&class2=&class=2" target="_blank" rel="noopener">조세일보</a></div>
+    </div>
+    <div class="card econ-card">
+      <h3>미 연준 기준금리</h3>
+      <div class="num">3.50~3.75%</div>
+      <div>동결 (매파적 기조, 7월 인상 가능성 거론)</div>
+      <div style="margin-top:6px;">의미: 연내 인상 가능성 언급됨 — 확정 아님, 지속 모니터링 필요.</div>
+      <div style="margin-top:6px;font-size:0.82rem;">출처: <a href="https://www.newsis.com/view/NISX20260713_0003707212" target="_blank" rel="noopener">뉴시스</a></div>
+    </div>
+    <div class="card econ-card">
+      <h3>코스피</h3>
+      <div class="num">6797.70</div>
+      <div><span class="change-up">▲ +0.74% (+49.75p)</span></div>
+      <div style="margin-top:6px;font-size:0.82rem;">출처: <a href="https://www.newspim.com/news/view/20260722001088" target="_blank" rel="noopener">뉴스핌</a></div>
+    </div>
+    <div class="card econ-card">
+      <h3>코스닥</h3>
+      <div class="num">751.09</div>
+      <div><span class="change-down">▼ -0.30% (-2.25p)</span></div>
+      <div style="margin-top:6px;font-size:0.82rem;">출처: <a href="https://www.mt.co.kr/stock/2026/07/22/2026072215245457304" target="_blank" rel="noopener">머니투데이</a></div>
+    </div>
+    <div class="card econ-card">
+      <h3>반도체 레버리지 ETF 쏠림</h3>
+      <div>삼성전자 +2배 ETF 약 2.5조원, SK하이닉스 +2배 ETF 약 2,560억원 유입</div>
+      <div style="margin-top:6px;font-size:0.85rem;">※ 정확한 일자 기준 시점은 "검증 불가"로 보고서 자체 표기됨</div>
+      <div style="margin-top:6px;font-size:0.82rem;">출처: <a href="https://securities.miraeasset.com/bbs/download/2145109.pdf?attachmentId=2145109" target="_blank" rel="noopener">미래에셋증권 리서치</a></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>4. 학습팀</h2>
+  <div class="no-report-box">
+    ⚠ 오늘자(2026-07-23) 학습 보고서가 생성되지 않았습니다. 자동화 실행 여부 확인이 필요합니다. 가장 최근 보고서는 2026-07-22 작성본입니다.
+  </div>
+  <p class="tag-ref" style="margin-top:10px;">참고용 — 2026-07-22 최신 보고서 요약 (오늘 학습 내용 아님)</p>
+  <div class="card">
+    <ul class="action-list">
+      <li><strong>파닉스 규칙:</strong> 짧은 모음 a, e, i, o, u</li>
+      <li><strong>전기·엔지니어링 영어 단어(제어·계장):</strong> sensor, signal, control, alarm, input, output</li>
+      <li><strong>전기 학습 주제:</strong> 직렬·병렬회로, 옴의 법칙(V=I×R)</li>
+      <li><strong>Python·AI 자동화 주제:</strong> if 조건문을 이용한 전압 이상 감지 예제</li>
+    </ul>
+    <p style="font-size:0.85rem;color:var(--muted);">항공·항공정비·항공공학 관련 내용은 포함되어 있지 않음(전일 확인, 오늘 재확인 안 됨).</p>
+  </div>
+</section>
+
+<section>
+  <h2>원본 파일 바로가기</h2>
+  <div class="card filelinks">
+    <a href="../recruitment/2026-07-23.md">recruitment/2026-07-23.md (미생성)</a>
+    <a href="../recruitment/2026-07-22.md">recruitment/2026-07-22.md (최신)</a><br>
+    <a href="../economy/2026-07-23.md">economy/2026-07-23.md (미생성)</a>
+    <a href="../economy/2026-07-22.md">economy/2026-07-22.md (최신)</a><br>
+    <a href="../learning/2026-07-23.md">learning/2026-07-23.md (미생성)</a>
+    <a href="../learning/2026-07-22.md">learning/2026-07-22.md (최신)</a><br>
+    <a href="../youth-support/2026-07-22.md">youth-support/2026-07-22.md (이번 주 최신 보고서)</a><br>
+    <a href="./2026-07-23.md">qa/2026-07-23.md (Markdown 검증 리포트)</a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  본 대시보드는 qa/2026-07-23.md 검증 결과와 각 팀 원본 보고서를 기준으로 작성되었으며, 원본 내용을 임의로 추가·과장하지 않았습니다. 확인되지 않은 사항은 "확인 필요"로 표시했습니다.
+</footer>
+
+</body>
+</html>
