@@ -24,12 +24,42 @@ $prompt = @"
 사람인, 잡코리아, 원티드, 링크드인, 기업 채용 홈페이지와 해외·외국계 채용정보를
 확인하고, 최근 24시간 이내 신규 공고와 현재 지원 가능한 공고를 우선 조사하세요.
 
+[검색 기간 확장 원칙]
+
+최근 24시간 이내 신규 공고를 최우선으로 검색하되,
+최근 30일 이내 등록된 현재 지원 가능한 공고도 반드시 함께 확인하세요.
+
+검색 결과를 다음 두 항목으로 구분하세요.
+
+1. 최근 24시간 이내 신규 공고
+2. 최근 30일 이내 등록된 현재 지원 가능한 주요 공고
+
+최근 24시간 이내 공고가 아니라는 이유만으로
+현재 지원 가능한 우수 공고를 제외하지 마세요.
+
 직무명에 '엔지니어', '전기', '전장', '설계', '시운전', '커미셔닝',
 '서비스 엔지니어', '필드 서비스', '자동화', '제어', '계장',
 '조선', '선박', '해양', '플랜트'가 포함된 공고를 중점적으로 확인하세요.
 
 단순 생산직, 단순 조립직, 영업 중심 직무, 사용자 경력과 연관성이 낮은
 IT 개발자 직무는 제외하세요.
+
+[추가 필수 검색 직무]
+
+Engineer뿐만 아니라 다음 Technician 직무도 반드시 검색하세요.
+
+- Field Service Technician
+- Electrical Technician
+- Electrical/I&C Technician
+- I&C Technician
+- Instrumentation & Control Technician
+- Commissioning Technician
+- Service Technician
+- Turbine Technician
+
+Technician이라는 명칭만으로 단순 생산직 또는 단순 조립직으로 판단하지 마세요.
+전기, 계장, 제어, 시운전, 발전설비, 터빈, 선박 및 산업설비와 관련된
+현장 기술직은 사용자의 엔지니어 경력과 연결되는 직무로 평가하세요.
 
 [필수 검색 채널 및 우선순위]
 
@@ -114,6 +144,22 @@ LinkedIn에서 현재 지원 가능한 유효 공고가 있으면 최소 3건을
 - 외국계 선박엔진·전기 엔지니어로의 경력 확장 가능성
 
 단순 생산직, 단순 조립직, 영업 중심 직무 및 관련 없는 소프트웨어 개발직은 제외하세요.
+
+[관심기업 필수 확인]
+
+매 실행 시 지멘스에너지와 Siemens Energy 공식 채용 페이지를 반드시 검색하세요.
+
+다음 검색어를 각각 수행하세요.
+
+site:saramin.co.kr/zf_user/jobs/relay/view "지멘스에너지"
+site:saramin.co.kr "지멘스에너지" "Field Service"
+site:saramin.co.kr "Electrical/I&C"
+site:jobs.siemens-energy.com Korea "Field Service"
+site:jobs.siemens-energy.com Korea "Electrical"
+site:jobs.siemens-energy.com "Field Service Technician for Electrical/I&C"
+
+사람인에서 발견한 지멘스에너지 공고는
+지멘스에너지 공식 채용 페이지에서도 현재 지원 가능 여부를 재확인하세요.
 
 [자동 실행 원칙]
 
