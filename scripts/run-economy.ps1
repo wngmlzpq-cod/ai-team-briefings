@@ -24,7 +24,7 @@ $prompt = @"
 숫자 위주 데이터는 "economy/오늘날짜_data.csv"로도 별도 저장
 "@
 
-claude -p $prompt --permission-mode acceptEdits
+claude -p $prompt --permission-mode acceptEdits --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "WebSearch" "WebFetch"
 
 git add "economy/"
 git diff --cached --quiet

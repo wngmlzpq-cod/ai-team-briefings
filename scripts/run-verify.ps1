@@ -26,7 +26,7 @@ $prompt = @"
 - 누락(어제 대비): 없음 / 있음(구체적 사유, git diff 근거 포함)
 "@
 
-claude -p $prompt --permission-mode acceptEdits
+claude -p $prompt --permission-mode acceptEdits --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "WebSearch" "WebFetch" "Bash(git log *)" "Bash(git diff *)"
 
 git add "qa/"
 git diff --cached --quiet

@@ -26,7 +26,7 @@ $prompt = @"
 (카테고리 4개 각각 최소 1개 항목)
 "@
 
-claude -p $prompt --permission-mode acceptEdits
+claude -p $prompt --permission-mode acceptEdits --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "WebSearch" "WebFetch"
 
 git add "learning/"
 git diff --cached --quiet

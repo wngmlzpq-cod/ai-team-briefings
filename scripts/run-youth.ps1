@@ -28,7 +28,7 @@ $prompt = @"
 (건수만큼 반복)
 "@
 
-claude -p $prompt --permission-mode acceptEdits
+claude -p $prompt --permission-mode acceptEdits --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "WebSearch" "WebFetch"
 
 git add "youth-support/"
 git diff --cached --quiet
