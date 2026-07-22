@@ -1,6 +1,8 @@
 ﻿Set-Location "C:\Users\user\AI-Team\ai-team-briefings"
 git pull --rebase origin main
 
+$today = Get-Date -Format 'yyyy-MM-dd'
+
 $prompt = @"
 (저장소 루트의 CLAUDE.md 공통 규칙을 따르세요.)
 
@@ -29,9 +31,22 @@ $prompt = @"
 단순 생산직, 단순 조립직, 영업 중심 직무, 사용자 경력과 연관성이 낮은
 IT 개발자 직무는 제외하세요.
 
-아래 형식으로 "recruitment/오늘날짜.md" 파일을 만드세요:
+[자동 실행 원칙]
 
-# 채용분석팀 브리핑 (날짜)
+- 이 작업은 사용자가 지켜보지 않는 비대화형 자동 실행입니다.
+- 사용자에게 질문하거나 선택지를 제시하지 말고, 끝까지 스스로 완료하세요.
+- 실행할 때마다 반드시 웹 검색을 새로 수행하세요.
+- "recruitment/$today.md" 파일이 이미 존재하더라도 작업을 중단하지 마세요.
+- 기존 파일을 읽은 뒤 최신 검색 결과로 전체 내용을 갱신하여 덮어쓰세요.
+- 기존 공고의 모집 상태, 마감일, 출처 URL도 다시 확인하세요.
+- 중복 공고는 제거하세요.
+- 신규 공고가 없더라도 파일을 갱신하고 "최근 24시간 신규 공고 없음"이라고 기록하세요.
+- 확인되지 않은 사실은 만들지 말고 "확인 필요"라고 표시하세요.
+- 작업 완료 후 사용자에게 질문하지 말고 파일 저장까지 완료하세요.
+
+아래 형식으로 "recruitment/$today.md" 파일을 새로 작성하거나 기존 파일을 갱신하세요:
+
+# 채용분석팀 브리핑 $today
 
 ## 요약 (3줄 이내)
 
@@ -56,7 +71,6 @@ git diff --cached --quiet
 if ($LASTEXITCODE -eq 0) {
     Write-Host "변경 없음"
 } else {
-    $today = Get-Date -Format 'yyyy-MM-dd'
     git commit -m "채용분석팀 브리핑 $today"
 
     for ($i = 1; $i -le 5; $i++) {
