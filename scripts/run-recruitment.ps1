@@ -1,4 +1,4 @@
-Set-Location "C:\Users\user\AI-Team\ai-team-briefings"
+﻿Set-Location "C:\Users\user\AI-Team\ai-team-briefings"
 git pull --rebase origin main
 
 $prompt = @"
@@ -28,7 +28,7 @@ $prompt = @"
 (공고 수만큼 항목 반복)
 "@
 
-claude -p $prompt --permission-mode acceptEdits --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "WebSearch" "WebFetch"
+claude --permission-mode dontAsk --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch" -p $prompt
 
 git add "recruitment/"
 git diff --cached --quiet

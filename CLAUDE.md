@@ -6,9 +6,9 @@
 
    C:\Users\user\AI-Team\ai-team-briefings
 
-2. 작업을 시작하기 전에 다음 명령으로 GitHub의 최신 내용을 가져온다.
+2. 2. Git의 pull, add, commit, push는 PowerShell 실행 스크립트가 담당한다.
 
-   git pull --rebase origin main
+   Claude 에이전트는 직접 Git 명령을 실행하지 않고, 지정된 결과 파일만 작성한다.
 
 3. 각 팀은 자신에게 지정된 폴더만 생성·수정한다.
 
@@ -35,4 +35,5 @@
 
 9. 출처를 직접 확인하지 못한 정보는 사실로 단정하지 않고 "확인 필요" 또는 "검증 불가"라고 표시한다.
 
-10. git push가 실패하면 강제 push하지 않는다. git pull --rebase origin main을 실행한 후 다시 push하고, 작업 종료 전 git status를 확인한다.
+10. Claude 에이전트는 지정된 팀 폴더에 결과 파일을 작성한 뒤 종료한다.
+    Git 기록과 GitHub 전송은 PowerShell 실행 스크립트가 담당한다.
