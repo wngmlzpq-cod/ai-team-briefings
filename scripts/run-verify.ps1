@@ -469,6 +469,50 @@ if (-not (Test-Path -LiteralPath $finalHtmlPath)) {
     throw "Final QA HTML was not created: $finalHtmlPath"
 }
 
+# 세로형 QA 대시보드 HTML 생성
+Write-Host ""
+Write-Host "Generating vertical QA dashboard HTML..."
+
+& powershell.exe `
+    -NoProfile `
+    -ExecutionPolicy Bypass `
+    -File (Join-Path $PSScriptRoot "build-dashboard.ps1") `
+    -QaPath $finalQaPath `
+    -OutputPath (Join-Path $repo "qa\dashboard-$today.html")
+
+if ($LASTEXITCODE -ne 0) {
+    throw "Vertical dashboard HTML generation failed."
+}
+
+$dashboardHtmlPath = Join-Path $repo "qa\dashboard-$today.html"
+
+if (-not (Test-Path -LiteralPath $dashboardHtmlPath)) {
+    throw "Vertical dashboard HTML was not created: $dashboardHtmlPath"
+}
+
+# 세로형 QA 대시보드 PNG 생성
+Write-Host "Converting vertical QA dashboard to PNG..."
+
+& powershell.exe `
+    -NoProfile `
+    -ExecutionPolicy Bypass `
+    -File (Join-Path $PSScriptRoot "convert-dashboard-to-png.ps1") `
+    -HtmlPath $dashboardHtmlPath `
+    -OutputPath (Join-Path $repo "qa\dashboard-$today.png")
+
+if ($LASTEXITCODE -ne 0) {
+    throw "Vertical dashboard PNG generation failed."
+}
+
+$dashboardPngPath = Join-Path $repo "qa\dashboard-$today.png"
+
+if (-not (Test-Path -LiteralPath $dashboardPngPath)) {
+    throw "Vertical dashboard PNG was not created: $dashboardPngPath"
+}
+
+Write-Host "Dashboard HTML: qa/dashboard-$today.html"
+Write-Host "Dashboard PNG : qa/dashboard-$today.png"
+
 # 중간 산출물은 저장소에 남기되, 카카오 전송 대상은 최종 qa/YYYY-MM-DD.md
 git add -- "recruitment/" "youth-support/" "economy/" "learning/" "qa/"
 
