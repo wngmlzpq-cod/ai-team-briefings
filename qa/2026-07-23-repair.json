@@ -1,0 +1,28 @@
+{
+  "date": "2026-07-23",
+  "needs_rework": true,
+  "teams": [
+    {
+      "team": "recruitment",
+      "target_file": "recruitment/2026-07-23.md",
+      "severity": "major",
+      "auto_repair": true,
+      "reasons": [
+        "2026-07-22 보고서 항목3(Black & Veatch, Electrical Supervisor - Pre-Commissioning & Commissioning, 거제, https://careers.bv.com/job/Geoji-si-Electrical-Supervisor-Pre-Commissioning-&-Commissioning/1416636133/)이 2026-07-23 보고서 본문과 마감/제외 목록 어디에도 없이 사라짐",
+        "WebFetch로 해당 URL을 재조회한 결과 2026-07-23 기준 Apply now 버튼이 활성화된 지원 가능 상태로 확인되어, 정당한 사유 없는 누락으로 판단됨",
+        "동일 프로젝트(거제 FLNG)의 항목1·2와 동일한 선정 기준을 적용했다면 포함되었어야 할 공고이므로 항목으로 복원하거나 의도적 제외 사유를 명시해야 함"
+      ]
+    },
+    {
+      "team": "youth-support",
+      "target_file": "youth-support/2026-07-22.md",
+      "severity": "major",
+      "auto_repair": true,
+      "reasons": [
+        "항목10(서울시 청년수당) 출처 URL 중 https://news.seoul.go.kr/gov/archives/575527 이 302 리다이렉트 2회를 거쳐 서울시 공식 오류 페이지(https://www.seoul.go.kr/common/errorAccess.html)로 연결되는 깨진 링크임을 WebFetch로 확인함",
+        "동일 항목에 병기된 두 번째 URL(https://youth.seoul.go.kr/bbs/view.do?key=2303300002&pstSn=2603030006&sc_bbsCtgrySn=2304110001)은 정상 작동하며 실제 공고(서울특별시 공고 제2026-708호)를 보여주므로, 깨진 링크만 제거하거나 정상 링크로 교체하면 되는 단순 수정 가능한 오류임",
+        "이 문제는 이전 QA 사이클(2026-07-22)에서도 동일하게 지적되었으나 아직 수정되지 않은 반복 미해결 사항임"
+      ]
+    }
+  ]
+}
