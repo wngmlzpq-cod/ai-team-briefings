@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Team Daily Dashboard — 2026-07-24</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1:      #fcfcfb;
+    --page-plane:     #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --border:         rgba(11,11,11,0.10);
+    --status-good:      #0ca30c;
+    --status-good-bg:   #e6f6e6;
+    --status-warning:   #b9790c;
+    --status-warning-bg:#fdf1d9;
+    --status-serious:   #c2542c;
+    --status-serious-bg:#fbe7de;
+    --status-critical:  #d03b3b;
+    --status-critical-bg:#fbe2e2;
+    --series-blue:    #2a78d6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --surface-1:      #1a1a19;
+      --page-plane:     #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --border:         rgba(255,255,255,0.10);
+      --status-good:      #0ca30c;
+      --status-good-bg:   #10310f;
+      --status-warning:   #eda100;
+      --status-warning-bg:#3a2c05;
+      --status-serious:   #ec835a;
+      --status-serious-bg:#3a1f11;
+      --status-critical:  #e66767;
+      --status-critical-bg:#3a1414;
+      --series-blue:    #3987e5;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page-plane);
+    color: var(--text-primary);
+    line-height: 1.55;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 16px; }
+  header.hero {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  header.hero h1 { margin: 0 0 6px; font-size: 1.4rem; }
+  header.hero .meta { color: var(--text-secondary); font-size: 0.92rem; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+  .badge.good { color: var(--status-good); background: var(--status-good-bg); }
+  .badge.warning { color: var(--status-warning); background: var(--status-warning-bg); }
+  .badge.serious { color: var(--status-serious); background: var(--status-serious-bg); }
+  .badge.critical { color: var(--status-critical); background: var(--status-critical-bg); }
+
+  section { margin-bottom: 24px; }
+  h2 {
+    font-size: 1.05rem;
+    border-bottom: 1px solid var(--gridline);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 0.98rem; }
+  .card p { margin: 4px 0; font-size: 0.88rem; color: var(--text-secondary); }
+  .card .stat {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .card .stat-label { font-size: 0.8rem; color: var(--text-muted); }
+
+  ol.checklist { margin: 0; padding-left: 20px; }
+  ol.checklist li { margin-bottom: 8px; font-size: 0.92rem; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.85rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--gridline);
+    vertical-align: top;
+  }
+  th {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  tr:last-child td { border-bottom: none; }
+  .table-scroll { overflow-x: auto; }
+  a { color: var(--series-blue); text-decoration: underline; }
+
+  .repair-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    font-size: 0.88rem;
+  }
+  .repair-row .col { flex: 1 1 260px; }
+  .repair-row .label { color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; margin-bottom: 2px; }
+  .warn-list { margin: 0; padding-left: 20px; font-size: 0.88rem; }
+  .warn-list li { margin-bottom: 6px; }
+  .links-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .links-list li {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.88rem;
+  }
+  footer { text-align: center; color: var(--text-muted); font-size: 0.78rem; margin: 24px 0 10px; }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 10px; }
+    header.hero { padding: 16px; }
+    table, thead, tbody, th, td, tr { display: block; }
+    thead tr { position: absolute; top: -9999px; left: -9999px; }
+    tr { border-bottom: 2px solid var(--gridline); padding: 8px 0; }
+    td { border: none; padding: 4px 10px; }
+    td::before {
+      content: attr(data-label);
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>AI-Team Daily Dashboard</h1>
+    <div class="meta">
+      기준 날짜: 2026-07-24 &nbsp;|&nbsp;
+      전체 판정: <span class="badge good">✓ 통과</span> &nbsp;|&nbsp;
+      업데이트: 1차 QA(NO_REWORK) → 최종 QA 핵심 URL·수치 재검증 완료 (2026-07-24)
+    </div>
+  </header>
+
+  <section>
+    <h2>팀별 최종 상태</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>채용분석팀</h3>
+        <span class="badge good">✓ 통과</span>
+        <p>1차 QA 재작업 대상 아님. 오늘 잡코리아 항목5·6 원문 재검증 완료(마감일·지역·경력 일치). GE Vernova URL은 도구 한계로 미검증.</p>
+      </div>
+      <div class="card">
+        <h3>청년지원팀</h3>
+        <span class="badge good">✓ 통과</span>
+        <p>금요일 규칙에 따라 youth-support/2026-07-22.md(2일 경과, 7일 이내) 검증, 오류 없음.</p>
+      </div>
+      <div class="card">
+        <h3>경제연구팀</h3>
+        <span class="badge good">✓ 통과</span>
+        <p>재작업 대상 아님. 코스피 7096.89(+4.40%)·코스닥 790.28(+5.22%) 오늘 WebSearch 재검증 완료, 복수 출처 일치.</p>
+      </div>
+      <div class="card">
+        <h3>학습팀</h3>
+        <span class="badge good">✓ 통과</span>
+        <p>재작업 대상 아님. 항공 관련 내용 없음, 사용자 목표 4개 영역(영어·전기·Python·학교취업) 충족.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>오늘 반드시 확인할 내용 (최대 5개)</h2>
+    <ol class="checklist">
+      <li><strong>[채용분석]</strong> GE Vernova Field Service Engineer(항목4) 공식 지원 URL(Workday) — QA 자동 조회 도구로 페이지를 불러오지 못해 Apply 버튼 활성 여부 미검증, 지원 전 원문 직접 재확인 권고.</li>
+      <li><strong>[청년지원]</strong> 거제시 청년 월세 지원사업(항목1)의 정확한 신청 기간 — 거제시청 홈페이지에 세부 공고가 즉시 노출되지 않아 별도 확인 필요.</li>
+      <li><strong>[청년지원]</strong> 거제시 장학생 선발(항목3) 야간대학 재학생 포함 여부 — 검증 불가, 평생교육과 문의 필요.</li>
+      <li><strong>[경제연구]</strong> ETF 시장 세부 수치(순자산 500조원 시점, TIGER 200IT레버리지 +764.07% 등) — 방향성은 확인됐으나 개별 수치 전수 재검증은 못함.</li>
+      <li><strong>[학습]</strong> 거제대학교 전기공학과 정확한 학사일정·자격증 응시 일정 — 학교 공식 포털 확인 필요.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>자동 재작업 결과</h2>
+    <div class="repair-row">
+      <div class="col">
+        <div class="label">대상</div>
+        전체 4개 팀
+      </div>
+      <div class="col">
+        <div class="label">1차 QA 판정</div>
+        NO_REWORK — 명확한 오류가 확인되지 않아 자동 재작업 대상 없음
+      </div>
+      <div class="col">
+        <div class="label">최종 QA 재검증</div>
+        핵심 URL(잡코리아 2건)·경제 수치(코스피·코스닥) 직접 재조회 결과 보고서 내용과 일치, 추가 오류 미발견
+      </div>
+      <div class="col">
+        <div class="label">상태</div>
+        <span class="badge good">✓ 재작업 불필요 확정</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>채용분석 (recruitment/2026-07-24.md)</h2>
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>회사명</th><th>직무</th><th>지역</th><th>마감일</th><th>지원 가능</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="회사명">Black &amp; Veatch</td>
+          <td data-label="직무">Electrical Systems Commissioning Engineer</td>
+          <td data-label="지역">경남 거제</td>
+          <td data-label="마감일">명시 없음</td>
+          <td data-label="지원 가능"><span class="badge good">✓ 가능</span></td>
+          <td data-label="비고"><a href="https://careers.bv.com/job/Geoji-si-Electrical-Systems-Commissioning-Engineer/1407257033/">공식 채용페이지</a></td>
+        </tr>
+        <tr>
+          <td data-label="회사명">Black &amp; Veatch</td>
+          <td data-label="직무">I&amp;C System Commissioning Engineer</td>
+          <td data-label="지역">경남 거제</td>
+          <td data-label="마감일">12개월 계약직</td>
+          <td data-label="지원 가능"><span class="badge good">✓ 가능</span></td>
+          <td data-label="비고"><a href="https://careers.bv.com/job/Geoji-si-I&C-System-Commissioning-Engineer/1416636633/">공식 채용페이지</a></td>
+        </tr>
+        <tr>
+          <td data-label="회사명">Black &amp; Veatch</td>
+          <td data-label="직무">Electrical Supervisor - Pre-Commissioning &amp; Commissioning</td>
+          <td data-label="지역">경남 거제</td>
+          <td data-label="마감일">12개월 계약직</td>
+          <td data-label="지원 가능"><span class="badge good">✓ 가능</span></td>
+          <td data-label="비고">전일 QA 지적 복원 상태 유지 · <a href="https://careers.bv.com/job/Geoji-si-Electrical-Supervisor-Pre-Commissioning-&-Commissioning/1416636133/">공식 채용페이지</a></td>
+        </tr>
+        <tr>
+          <td data-label="회사명">GE Vernova</td>
+          <td data-label="직무">Field Service Engineer (Power and Drive)</td>
+          <td data-label="지역">부산(Centum)</td>
+          <td data-label="마감일">명시 없음</td>
+          <td data-label="지원 가능"><span class="badge warning">⚠ 확인 필요</span></td>
+          <td data-label="비고">Workday 페이지 도구 조회 실패로 미검증 · <a href="https://gevernova.wd5.myworkdayjobs.com/Vernova_ExternalSite/job/Busan/Field-Service-Engineer_R5036353-2/apply">공식 채용페이지</a></td>
+        </tr>
+        <tr>
+          <td data-label="회사명">㈜인틱스</td>
+          <td data-label="직무">플랜트 계장설계</td>
+          <td data-label="지역">서울 금천구</td>
+          <td data-label="마감일">2026-08-08</td>
+          <td data-label="지원 가능"><span class="badge good">✓ 가능 (오늘 재검증)</span></td>
+          <td data-label="비고"><a href="https://www.jobkorea.co.kr/Recruit/GI_Read/49546378">잡코리아</a></td>
+        </tr>
+        <tr>
+          <td data-label="회사명">㈜원엔지니어링 기술개발</td>
+          <td data-label="직무">변전소 전기설계분야 경력직</td>
+          <td data-label="지역">서울 금천구</td>
+          <td data-label="마감일">2026-08-15</td>
+          <td data-label="지원 가능"><span class="badge good">✓ 가능 (오늘 재검증)</span></td>
+          <td data-label="비고"><a href="https://www.jobkorea.co.kr/Recruit/GI_Read/49598437">잡코리아</a></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>청년지원 (검증한 최신 youth-support/2026-07-22.md, 금요일 규칙 적용)</h2>
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr><th>정책명</th><th>지역</th><th>현재(거제) 신청</th><th>서울 전입 후</th><th>신청 기간</th><th>출처</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="정책명">거제시 청년 월세 지원사업</td>
+          <td data-label="지역">거제</td>
+          <td data-label="현재(거제) 신청"><span class="badge good">✓ 가능</span></td>
+          <td data-label="서울 전입 후">불가</td>
+          <td data-label="신청 기간"><span class="badge warning">⚠ 확인 필요</span></td>
+          <td data-label="출처"><a href="https://www.geoje.go.kr/index.geoje?menuCd=DOM_000008908015000000">거제시청(오늘 접속 확인)</a></td>
+        </tr>
+        <tr>
+          <td data-label="정책명">거제시 장학생 선발</td>
+          <td data-label="지역">거제</td>
+          <td data-label="현재(거제) 신청"><span class="badge good">✓ 가능</span></td>
+          <td data-label="서울 전입 후">불가</td>
+          <td data-label="신청 기간">부문별 상이(2·5·6월)</td>
+          <td data-label="출처"><a href="https://www.newsfreezone.co.kr/news/articleView.html?idxno=670127">뉴스프리존</a></td>
+        </tr>
+        <tr>
+          <td data-label="정책명">청년일자리도약장려금(개인)</td>
+          <td data-label="지역">전국(개인지원 비수도권)</td>
+          <td data-label="현재(거제) 신청">조건부 가능</td>
+          <td data-label="서울 전입 후"><span class="badge critical">✕ 불가</span></td>
+          <td data-label="신청 기간">상시</td>
+          <td data-label="출처"><a href="https://www.moel.go.kr/news/notice/noticeView.do?bbs_seq=20260100030">고용노동부</a></td>
+        </tr>
+        <tr>
+          <td data-label="정책명">서울시 청년수당</td>
+          <td data-label="지역">서울</td>
+          <td data-label="현재(거제) 신청">불가</td>
+          <td data-label="서울 전입 후"><span class="badge good">✓ 가능</span></td>
+          <td data-label="신청 기간">연 2~3회 분기</td>
+          <td data-label="출처"><a href="https://youth.seoul.go.kr/bbs/view.do?key=2303300002&pstSn=2603030006&sc_bbsCtgrySn=2304110001">청년몽땅정보통</a></td>
+        </tr>
+        <tr>
+          <td data-label="정책명">서울시 청년월세지원</td>
+          <td data-label="지역">서울</td>
+          <td data-label="현재(거제) 신청">불가</td>
+          <td data-label="서울 전입 후"><span class="badge good">✓ 가능</span></td>
+          <td data-label="신청 기간">연 1~2회 모집</td>
+          <td data-label="출처"><a href="https://housing.seoul.go.kr/site/main/board/notice/12667">서울주거포털</a></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>경제 핵심 수치 (economy/2026-07-24.md)</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="stat-label">코스피 종가</div>
+        <div class="stat">7,096.89</div>
+        <p>+4.40% (+299.19p), 2026-07-23, 외국인 4거래일 연속 순매수 · 오늘 WebSearch 재검증 일치</p>
+      </div>
+      <div class="card">
+        <div class="stat-label">코스닥 종가</div>
+        <div class="stat">790.28</div>
+        <p>+5.22% (+39.19p), 2026-07-23 · 오늘 WebSearch 재검증 일치</p>
+      </div>
+      <div class="card">
+        <div class="stat-label">원/달러 환율</div>
+        <div class="stat">1,466.8원</div>
+        <p>전일 대비 -13.3원, 2026-07-23 마감</p>
+      </div>
+      <div class="card">
+        <div class="stat-label">미 FOMC 회의</div>
+        <div class="stat" style="font-size:1.1rem;">2026-07-28~29</div>
+        <p>결정 발표: 7/29 오후 2시(미 동부시간) · 한국 기준금리 2.75%(07-16 결정) 유지</p>
+      </div>
+      <div class="card">
+        <div class="stat-label">국내 ETF 순자산</div>
+        <div class="stat">500조원+</div>
+        <p>2026년 5월 돌파 · TIGER 200IT레버리지 +764.07% 등 세부 수치는 <span class="badge warning">⚠ 확인 필요</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>학습 계획 (learning/2026-07-24.md)</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>영어</h3>
+        <p>파닉스 4단계(자음 결합음 sh/ch/th/ph/wh) + 선박·조선 실무단어 6개(vessel, engine, generator, pump, valve, system)</p>
+      </div>
+      <div class="card">
+        <h3>전기</h3>
+        <p>직렬-병렬 혼합회로 해석(병렬 부분 먼저 합성 → 직렬 합산 → 옴의 법칙 적용)</p>
+      </div>
+      <div class="card">
+        <h3>Python·AI 자동화</h3>
+        <p>파일 처리 기초 — 측정값을 텍스트 파일에 기록(write)하고 다시 읽기(read)</p>
+      </div>
+      <div class="card">
+        <h3>내일 계획</h3>
+        <p>파닉스 5단계(자음 뭉치 bl/br/cl/cr/st/tr) + 고장·조치 실무단어(fault, failure, error)</p>
+      </div>
+    </div>
+    <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:8px;">항공·항공정비·항공공학 관련 키워드 없음 확인됨. 거제대학교 전기공학과 학사일정·자격증 응시 일정은 <span class="badge warning">⚠ 확인 필요</span> 상태 유지.</p>
+  </section>
+
+  <section>
+    <h2>남은 검증 경고</h2>
+    <ul class="warn-list">
+      <li><span class="badge warning">⚠ 확인 필요</span> GE Vernova 공식 지원 URL(Workday) — QA 자동 조회 도구로 페이지를 불러오지 못해 Apply 버튼 활성 여부 미검증(도구 한계, 보고서 오류 아님)</li>
+      <li><span class="badge warning">⚠ 확인 필요</span> 거제시 청년 월세 지원사업 정확한 신청 기간</li>
+      <li><span class="badge warning">⚠ 확인 필요</span> 거제시 장학생 선발 — 야간대학 재학생 포함 여부(검증 불가)</li>
+      <li><span class="badge warning">⚠ 확인 필요</span> ETF 세부 수치(순자산 500조원 달성 정확 시점, TIGER 200IT레버리지 +764.07% 등) 전수 재검증 미완료</li>
+      <li><span class="badge warning">⚠ 확인 필요</span> 거제대학교 전기공학과 학사일정·목표 자격증 및 응시 일정</li>
+      <li><span class="badge warning">⚠ 확인 필요</span> 청년지원팀 다수 항목의 소득 조건·신청 기간(보고서 자체에 이미 정확히 표시됨)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>원본 파일 바로가기</h2>
+    <ul class="links-list">
+      <li><a href="../recruitment/2026-07-24.md">채용분석팀 — recruitment/2026-07-24.md</a></li>
+      <li><a href="../economy/2026-07-24.md">경제연구팀 — economy/2026-07-24.md</a></li>
+      <li><a href="../learning/2026-07-24.md">학습팀 — learning/2026-07-24.md</a></li>
+      <li><a href="../youth-support/2026-07-22.md">청년지원팀 — youth-support/2026-07-22.md (금요일 규칙, 최근 7일 이내 최신 보고서)</a></li>
+      <li><a href="./2026-07-24.md">QA 검증 리포트 (Markdown) — qa/2026-07-24.md</a></li>
+    </ul>
+  </section>
+
+  <footer>AI-Team 검증팀 · qa/2026-07-24.html · 원본 보고서는 수정하지 않았습니다.</footer>
+</div>
+</body>
+</html>

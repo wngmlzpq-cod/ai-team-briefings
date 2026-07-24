@@ -1,0 +1,206 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>AI-Team QA Dashboard 2026-07-24</title>
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; }
+body {
+  font-family: "Malgun Gothic", "Segoe UI", sans-serif;
+  background: #f3f5f7;
+  color: #14171a;
+}
+.dashboard {
+  width: 1080px;
+  height: 1920px;
+  padding: 58px 58px 46px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.header {
+  background: #111827;
+  color: white;
+  border-radius: 34px;
+  padding: 38px 42px;
+}
+.header-top { display:flex; justify-content:space-between; align-items:flex-start; gap:24px; }
+.kicker { font-size: 24px; opacity:.72; letter-spacing:.06em; }
+h1 { margin: 10px 0 8px; font-size: 52px; line-height:1.1; }
+.date { font-size: 26px; opacity:.8; }
+.health {
+  min-width: 164px;
+  padding: 18px 20px;
+  text-align:center;
+  border-radius: 24px;
+  font-size: 28px;
+  font-weight: 800;
+}
+.health.ok, .badge.ok { background:#d8f7e4; color:#087a3d; }
+.health.warn, .badge.warn { background:#fff1c7; color:#9a6200; }
+.health.danger, .badge.danger { background:#ffe0e0; color:#ad1f1f; }
+.metrics { display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; }
+.metric {
+  background:white;
+  border-radius:26px;
+  padding:24px 22px;
+  min-height:128px;
+  box-shadow:0 8px 30px rgba(17,24,39,.06);
+}
+.metric .label { font-size:21px; color:#657080; }
+.metric .value { margin-top:12px; font-size:38px; font-weight:800; }
+.section-title { font-size:28px; font-weight:800; margin:0 0 14px 4px; }
+.team-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.team-card {
+  background:white;
+  border-radius:28px;
+  padding:24px 26px;
+  min-height:236px;
+  box-shadow:0 8px 30px rgba(17,24,39,.055);
+}
+.team-head { display:flex; justify-content:space-between; align-items:center; gap:14px; }
+.team-title { font-size:27px; font-weight:800; }
+.badge { padding:8px 15px; border-radius:999px; font-size:18px; font-weight:800; }
+.team-status { margin-top:19px; font-size:22px; line-height:1.45; font-weight:700; }
+.team-note {
+  margin-top:16px;
+  padding-top:15px;
+  border-top:1px solid #e7e9ed;
+  font-size:19px;
+  line-height:1.45;
+  color:#4b5563;
+}
+.bottom-grid { display:grid; grid-template-columns:1.08fr .92fr; gap:18px; }
+.panel {
+  background:white;
+  border-radius:28px;
+  padding:25px 28px;
+  min-height:272px;
+  box-shadow:0 8px 30px rgba(17,24,39,.055);
+}
+.panel h2 { margin:0 0 16px; font-size:27px; }
+.panel ul { margin:0; padding-left:25px; }
+.panel li { font-size:20px; line-height:1.55; margin-bottom:10px; }
+.final-row { display:grid; gap:12px; }
+.final-item {
+  background:#f6f7f9;
+  border-radius:18px;
+  padding:16px 18px;
+  font-size:20px;
+  line-height:1.4;
+}
+.issue {
+  background:#fff7e7;
+  border:1px solid #f4d08c;
+  border-radius:26px;
+  padding:22px 28px;
+  font-size:21px;
+  line-height:1.5;
+}
+.footer {
+  margin-top:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#6b7280;
+  font-size:18px;
+  padding:0 6px;
+}
+</style>
+</head>
+<body>
+<main class="dashboard">
+  <header class="header">
+    <div class="header-top">
+      <div>
+        <div class="kicker">AI-TEAM DAILY QUALITY REPORT</div>
+        <h1>QA 세로형 대시보드</h1>
+        <div class="date">2026-07-24</div>
+      </div>
+      <div class="health ok">PASS</div>
+    </div>
+  </header>
+
+  <section class="metrics">
+    <div class="metric"><div class="label">정상 팀</div><div class="value">4 / 4</div></div>
+    <div class="metric"><div class="label">자동 수정</div><div class="value">0 건</div></div>
+    <div class="metric"><div class="label">재검토 팀</div><div class="value">0 건</div></div>
+    <div class="metric"><div class="label">최종 판정</div><div class="value">PASS</div></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">팀별 검증 상태</h2>
+    <div class="team-grid">
+          <section class="team-card">
+      <div class="team-head">
+        <div class="team-title">💼 채용분석팀</div>
+        <span class="badge ok">정상</span>
+      </div>
+      <div class="team-status">통과 (일부 확인 필요 항목 존재)</div>
+      <div class="team-note">
+        <b>확인 필요</b><br>
+        - 항목4 GE Vernova 공식 지원 URL(https://gevernova.wd5.myworkdayjobs.com/Vernova_ExternalSite/job/Busan/Field-Service-Engineer_R5036353-2/apply)은 오늘도 QA 자동…
+      </div>
+    </section>    <section class="team-card">
+      <div class="team-head">
+        <div class="team-title">🏠 청년지원팀</div>
+        <span class="badge ok">정상</span>
+      </div>
+      <div class="team-status">통과</div>
+      <div class="team-note">
+        <b>확인 필요</b><br>
+        보고서 내 다수 항목(소득 조건, 신청 기간, 야간대학 재학 인정 여부, 재학생 자격 해당 여부 등)이 이미 &quot;확인 필요/검증 불가&quot;로 정확히 표시됨 — 팀 자체의 정상적인 불확실성 표기이며 QA 추가 지적 사항 아님.
+      </div>
+    </section>    <section class="team-card">
+      <div class="team-head">
+        <div class="team-title">📈 경제연구팀</div>
+        <span class="badge ok">정상</span>
+      </div>
+      <div class="team-status">통과</div>
+      <div class="team-note">
+        <b>확인 필요</b><br>
+        항목4 ETF 세부 수치(순자산 500조원 달성 시점, TIGER 200IT레버리지 +764.07% 등)는 방향성은 출처 기사와 일치하나 개별 수치를 오늘도 전수 재검증하지는 못함 — 특이사항은 아니며 참고용.
+      </div>
+    </section>    <section class="team-card">
+      <div class="team-head">
+        <div class="team-title">📚 학습팀</div>
+        <span class="badge ok">정상</span>
+      </div>
+      <div class="team-status">통과</div>
+      <div class="team-note">
+        <b>확인 필요</b><br>
+        거제대학교 전기공학과의 정확한 학사일정&#183;교과과정, 국가자격증 응시 일정은 보고서 자체에서 이미 &quot;확인 필요&quot;로 정확히 표시되어 있음(임의 생성 없음).
+      </div>
+    </section>
+    </div>
+  </section>
+
+  <section class="bottom-grid">
+    <div class="panel">
+      <h2>🔧 자동 재작업</h2>
+      <ul><li>자동 재작업 없음</li></ul>
+    </div>
+    <div class="panel">
+      <h2>✅ 최종 판정</h2>
+      <div class="final-row">
+        <div class="final-item"><b>통과</b><br>채용분석팀, 청년지원팀, 경제연구팀, 학습팀 (4개 팀 전체)</div>
+        <div class="final-item"><b>부분 통과</b><br>없음</div>
+        <div class="final-item"><b>재검토</b><br>없음 (단, 채용분석팀 항목4 GE Vernova 지원 URL은 도구 한계로 재검증 불가 상태이므로 사용자 직접 확인 권장)</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="issue">
+    <b>⚠ 남은 주요 확인 사항</b><br>
+    채용분석팀 항목4(GE Vernova) 공식 지원 URL(Workday)은 QA 자동 조회 도구로 페이지 콘텐츠를 불러오지 못해 &quot;Apply&quot; 버튼 활성 여부를 직접 재검증하지 못함(도구 한계, 보고서 오류로 단정 불가). 그 외 각 보고서에 이미 &quot;확인 필요&quot;로 정확히 표시된 항목들은 정상적인 불확실성 표기로 QA 지적 대상 아님.
+  </section>
+
+  <footer class="footer">
+    <span>Generated by AI-Team</span>
+    <span>Source: 2026-07-24.md</span>
+  </footer>
+</main>
+</body>
+</html>
