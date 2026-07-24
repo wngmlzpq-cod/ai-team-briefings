@@ -1,263 +1,150 @@
-Set-Location "C:\Users\user\AI-Team\ai-team-briefings"
+﻿$ErrorActionPreference = "Stop"
+
+$repoPath = "C:\Users\user\AI-Team\ai-team-briefings"
+Set-Location $repoPath
+
+Write-Host "=== Learning Agent Start ==="
+
 git pull --rebase origin main
 
-$today = Get-Date -Format 'yyyy-MM-dd'
+if ($LASTEXITCODE -ne 0) {
+    throw "git pull failed."
+}
 
-$prompt = @"
-(저장소 루트의 CLAUDE.md 공통 규칙을 따르세요.)
+$today = Get-Date -Format "yyyy-MM-dd"
+$outputFile = Join-Path $repoPath "learning\$today.md"
 
-당신은 사용자의 개인 학습을 돕는 코치입니다.
+$requiredPromptFiles = @(
+    "learning\prompts\agent-profile.md",
+    "learning\prompts\why-first-method.md",
+    "learning\prompts\learning-template.md"
+)
 
-[사용자 정보 고정]
+foreach ($relativePath in $requiredPromptFiles) {
+    $fullPath = Join-Path $repoPath $relativePath
 
-사용자는 거제대학교 전기공학과 야간 과정에 재학 중입니다.
-사용자의 전공은 항공정비학과나 항공공학과가 아닙니다.
+    if (-not (Test-Path $fullPath)) {
+        throw "Required prompt file not found: $relativePath"
+    }
+}
 
-사용자의 현재 학습 목표는 다음과 같습니다.
+if (-not (Get-Command claude -ErrorAction SilentlyContinue)) {
+    throw "Claude CLI was not found."
+}
 
-1. 영어 단어를 읽기 위한 기초 파닉스
-2. 전기·전자·선박·산업 엔지니어링 영어
-3. 전기기초회로와 전기자기학
-4. 초급 Python과 AI 자동화
-5. 전기 엔지니어 취업 준비
+$profile = Get-Content `
+    (Join-Path $repoPath "learning\prompts\agent-profile.md") `
+    -Raw `
+    -Encoding UTF8
 
-사용자의 학교, 학과, 자격증 또는 시험 일정을 임의로 추정하거나 만들어내지 마세요.
+$whyFirstMethod = Get-Content `
+    (Join-Path $repoPath "learning\prompts\why-first-method.md") `
+    -Raw `
+    -Encoding UTF8
 
-[학습 카테고리 고정]
+$template = Get-Content `
+    (Join-Path $repoPath "learning\prompts\learning-template.md") `
+    -Raw `
+    -Encoding UTF8
 
-매일 학습 브리핑은 반드시 다음 네 가지 카테고리로만 구성하세요.
+$template = $template.Replace("{{DATE}}", $today)
 
-1. 영어
-- 파닉스
-- 영어 단어 읽기
-- 전기·전자·선박·산업 엔지니어링 기초 단어
-- 짧은 기술문장
+$executionRules = @"
+# Execution Instructions
 
-2. 전기
-- 전기기초회로
-- 전압, 전류, 저항, 전력
-- 직렬·병렬회로
-- 회로 해석
-- 전기자기학 기초
-- 전기설비와 전장 기초
-
-3. Python·AI 자동화
-- 리스트
-- if 조건문
-- for와 range
-- 파일 처리
-- 간단한 전기 계산
-- 업무 자동화 기초
-
-4. 학교·취업 준비
-- 거제대학교 전기공학과 학습
-- 전기 관련 자격증
-- 전기·엔지니어링 직무 준비
-- 복습 계획과 과제 정리
-
-위 네 가지 이외의 산업 카테고리를 임의로 추가하지 마세요.
-
-[항공 분야 제외]
-
-사용자가 별도로 요청하지 않는 한 다음 내용을 절대 포함하지 마세요.
-
-- 항공
-- 항공기
-- 항공정비
-- 항공공학
-- 항공기 전기배선
-- Wire Harness Inspection
-- AMM
-- 항공 관련 자격증
-- 항공정비 실기시험
-- 항공 분야 D-day
-- 항공 분야 취업정보
-
-전기라는 공통점만으로 항공 분야를 사용자 학습에 연결하지 마세요.
-
-예시 문장과 실무 상황은 전기설비, 선박, 조선, 발전설비,
-산업 플랜트, 전장, 제어, 계장, 시운전 분야에서만 선정하세요.
-
-[영어 학습 최우선 원칙]
-
-사용자는 현재 영어 단어를 소리 내어 읽는 것부터 어려워하는 초급 수준입니다.
-
-따라서 항공정비 매뉴얼, 항공 분야 전문용어, 고급 기술문서 해석,
-복잡한 문법 및 긴 영어 회화는 현재 학습과정에서 제외하세요.
-
-영어 학습은 반드시 다음 순서로 구성하세요.
-
-1. 파닉스(Phonics, 파닉스)
-2. 전기·선박·엔지니어링 기초 단어
-3. 짧은 기술 문장 읽기
-4. 실제 도면·매뉴얼에서 사용하는 기초 표현
-5. 이전 학습 복습 문제
-
-영어 공부의 목표는 시험 점수가 아니라,
-사용자가 향후 전기·선박·엔지니어링 도면, 매뉴얼,
-채용공고 및 기술문서를 직접 읽을 수 있게 만드는 것입니다.
-
-[파닉스 학습 구성]
-
-매일 한 가지 파닉스 규칙만 학습하세요.
-
-다음 내용을 포함하세요.
-
-- 오늘의 알파벳 또는 발음 규칙
-- 입 모양과 소리 내는 방법
-- 한글로 적은 발음
-- 단어를 소리 단위로 끊어서 읽는 방법
-- 쉬운 일반 단어 3개
-- 전기·엔지니어링 관련 단어 5개
-- 전날 배운 내용 복습
-
-처음에는 다음 순서로 진행하세요.
-
-1. 알파벳 자음의 기본 소리
-2. 짧은 모음 a, e, i, o, u
-3. 자음-모음-자음 형태의 단어
-4. sh, ch, th, ph, wh 등의 결합음
-5. bl, br, cl, cr, st, tr 등의 자음 묶음
-6. 긴 모음과 묵음 e
-7. 두 음절 이상의 단어를 나누어 읽는 방법
-8. 엔지니어링 단어를 음절 단위로 읽는 방법
-
-한 번에 너무 많은 규칙을 설명하지 마세요.
-
-[엔지니어링 영어 우선 분야]
-
-영어 단어와 문장은 다음 분야를 중심으로 구성하세요.
-
-1. 전기기초
-- voltage
-- current
-- resistance
-- circuit
-- power
-- cable
-- wire
-- panel
-- breaker
-- terminal
-
-2. 제어·계장
-- sensor
-- signal
-- control
-- alarm
-- input
-- output
-- pressure
-- temperature
-- level
-- flow
-
-3. 시운전·현장업무
-- test
-- check
-- inspect
-- measure
-- connect
-- disconnect
-- start
-- stop
-- verify
-- record
-
-4. 선박·조선 엔지니어링
-- vessel
-- engine
-- generator
-- pump
-- valve
-- system
-- equipment
-- drawing
-- manual
-- commissioning
-
-5. 장애와 조치
-- fault
-- failure
-- error
-- abnormal
-- normal
-- repair
-- replace
-- reset
-- troubleshoot
-- confirm
-
-단, 위 단어를 하루에 전부 가르치지 말고 파닉스 규칙에 맞는 단어만 5~8개씩 선정하게 해야 합니다.
-
-[현재 제외할 영어 주제]
-
-다음 내용은 사용자가 별도로 요청하기 전까지 학습자료에 포함하지 마세요.
-
-- 항공정비 매뉴얼
-- 항공기 부품 및 정비 지시문
-- 항공 분야 전문용어
-- 고급 비즈니스 영어
-- 토익 문제 중심 학습
-- 긴 회화문
-- 한 번에 20개가 넘는 단어 암기
-- 파닉스 설명 없이 전문단어만 제시하는 방식
-
-선박과 항공을 같은 산업 기술 분야라는 이유로 임의로 연결하지 마세요.
-사용자의 현재 목표는 전기·선박·엔지니어링 영어입니다.
-
-[자동 실행 원칙]
-
-- 이 작업은 사용자가 지켜보지 않는 비대화형 자동 실행입니다.
-- 사용자에게 질문하거나 선택지를 제시하지 말고 끝까지 완료하세요.
-- 실행할 때마다 오늘의 학습 내용을 새로 구성하세요.
-- "learning/$today.md" 파일이 이미 존재해도 작업을 중단하지 마세요.
-- 기존 파일을 읽고 최신 학습계획으로 갱신하여 덮어쓰세요.
-- 사용자의 현재 수준에서 이해할 수 있도록 쉬운 한국어로 설명하세요.
-- 영어 용어에는 한글 발음을 함께 적으세요.
-- 확인되지 않은 사실을 만들지 마세요.
-- 작업 완료 후 파일 저장까지 완료하세요.
-
-[보고서 출력 형식]
-
-"learning/$today.md" 파일을 아래 형식으로 새로 작성하거나 기존 파일을 갱신하세요:
-
-# 학습팀 브리핑 $today
-
-## 오늘의 핵심 목표
-
-## 1. 영어: 파닉스와 엔지니어링 영어
-
-## 2. 전기: 기초회로 또는 전기자기학
-
-## 3. Python·AI 자동화
-
-## 4. 학교·취업 준비
-
-## 오늘의 복습 문제
-
-## 정답과 설명
+- Follow the repository root CLAUDE.md.
+- Use the agent profile, why-first method, and output template below.
+- Complete the task without asking the user questions.
+- Read the existing file before updating it when it already exists.
+- Create or update only this result file:
+  learning/$today.md
+- Do not modify prompt files, scripts, CLAUDE.md, or another agent's files.
+- Use clear Korean suitable for an adult beginner.
+- Do not invent schedules, qualifications, facts, or sources.
+- Finish only after the result file has been written successfully.
 "@
 
-claude --permission-mode dontAsk --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch" -p $prompt
+$prompt = @"
+$executionRules
 
-git add "learning/"
+---
+
+$profile
+
+---
+
+$whyFirstMethod
+
+---
+
+$template
+"@
+
+Write-Host "Generating: learning/$today.md"
+
+claude `
+    --permission-mode dontAsk `
+    --allowedTools "Read,Write,Edit,Glob,Grep,WebSearch,WebFetch" `
+    -p $prompt
+
+if ($LASTEXITCODE -ne 0) {
+    throw "Claude learning agent failed."
+}
+
+if (-not (Test-Path $outputFile)) {
+    throw "Expected learning report was not created: $outputFile"
+}
+
+$fileInfo = Get-Item $outputFile
+
+if ($fileInfo.Length -lt 500) {
+    throw "Learning report is unexpectedly small: $($fileInfo.Length) bytes"
+}
+
+git add `
+    "learning/$today.md" `
+    "learning/prompts/" `
+    "CLAUDE.md" `
+    "scripts/run-study.ps1"
+
 git diff --cached --quiet
 
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "변경 없음"
-} else {
-    git commit -m "학습팀 브리핑 $today"
-
-    for ($i = 1; $i -le 5; $i++) {
-        git pull --rebase origin main
-        git push
-
-        if ($LASTEXITCODE -eq 0) {
-            break
-        }
-
-        Write-Host "push 실패, 재시도 ($i/5)..."
-        Start-Sleep -Seconds (Get-Random -Minimum 5 -Maximum 25)
-    }
+    Write-Host "No Git changes."
+    exit 0
 }
+
+git commit -m "Apply why-first learning method $today"
+
+if ($LASTEXITCODE -ne 0) {
+    throw "git commit failed."
+}
+
+$pushSucceeded = $false
+
+for ($i = 1; $i -le 5; $i++) {
+    git pull --rebase origin main
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "git pull retry failed ($i/5)."
+        Start-Sleep -Seconds 5
+        continue
+    }
+
+    git push
+
+    if ($LASTEXITCODE -eq 0) {
+        $pushSucceeded = $true
+        break
+    }
+
+    Write-Host "git push failed. Retrying ($i/5)..."
+    Start-Sleep -Seconds (Get-Random -Minimum 5 -Maximum 25)
+}
+
+if (-not $pushSucceeded) {
+    throw "git push failed after 5 attempts."
+}
+
+Write-Host "=== Learning Agent Complete ==="
+Write-Host "Output: learning/$today.md"

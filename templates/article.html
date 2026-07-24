@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | {{ site_title }}</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="portal-header">
+    <a class="home-link" href="../index.html">🤖 {{ site_title }}</a>
+</header>
+
+<main class="article-container">
+    <nav class="breadcrumb">
+        <a href="../index.html">홈</a>
+        <span>›</span>
+        <a href="index.html">{{ category.name }}</a>
+        <span>›</span>
+        <span>{{ report_date }}</span>
+    </nav>
+
+    <article class="markdown-body">
+        {{ content | safe }}
+    </article>
+</main>
+
+<footer>
+    <p>AI Team Portal</p>
+</footer>
+</body>
+</html>

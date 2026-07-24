@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ site_title }}</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header>
+    <h1>🤖 {{ site_title }}</h1>
+    <p>AI 에이전트가 생성한 최신 브리핑을 한곳에서 확인합니다.</p>
+</header>
+
+<main class="portal-grid">
+{% for category in categories %}
+    <a class="portal-card" href="{{ category.output_dir }}/index.html">
+        <div class="portal-card-icon">{{ category.icon }}</div>
+        <h2>{{ category.name }}</h2>
+        <p>{{ category.description }}</p>
+        {% if category.latest %}
+        <small>최근 보고서: {{ category.latest.date }}</small>
+        {% else %}
+        <small>아직 보고서가 없습니다.</small>
+        {% endif %}
+    </a>
+{% endfor %}
+</main>
+
+<footer>
+    <p>AI Team Portal</p>
+</footer>
+</body>
+</html>

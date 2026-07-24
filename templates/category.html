@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category.name }} | {{ site_title }}</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+    <a class="home-link" href="../index.html">🤖 {{ site_title }}</a>
+    <h1>{{ category.icon }} {{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+</header>
+
+<main class="report-list">
+{% if reports %}
+    {% for report in reports %}
+    <a class="report-item" href="{{ report.filename }}">
+        <div>
+            <strong>{{ report.title }}</strong>
+            <p>{{ report.date }}</p>
+        </div>
+        <span>열기 →</span>
+    </a>
+    {% endfor %}
+{% else %}
+    <div class="empty-state">아직 생성된 보고서가 없습니다.</div>
+{% endif %}
+</main>
+
+<footer>
+    <p>AI Team Portal</p>
+</footer>
+</body>
+</html>

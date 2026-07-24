@@ -1,0 +1,15 @@
+﻿# Local backup
+backup/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# VSCode
+.vscode/
+
+# Python
+__pycache__/
+
+# Logs
+*.log
