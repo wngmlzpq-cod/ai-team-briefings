@@ -1,0 +1,16 @@
+services:
+  jos:
+    build: .
+    container_name: jos
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "80:8000"
+    volumes:
+      - ./data:/app/data
+      - ./recruitment:/app/recruitment
+      - ./youth-support:/app/youth-support
+      - ./economy:/app/economy
+      - ./learning:/app/learning
+      - ./qa:/app/qa

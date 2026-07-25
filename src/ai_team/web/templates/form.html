@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · J-OS{% endblock %}
+{% block content %}
+<section class="heading"><div><small>DAILY RECORD</small><h1>{{ title }}</h1></div></section>
+<form class="form-panel" method="post" action="{{ action }}">
+    <label>날짜<input type="date" name="date" value="{{ item.date }}" required></label>
+    <label>유형
+        <select name="type">
+            <option value="income" {% if item.type == "income" %}selected{% endif %}>수입</option>
+            <option value="expense" {% if item.type == "expense" %}selected{% endif %}>지출</option>
+        </select>
+    </label>
+    <label>카테고리<input name="category" value="{{ item.category or '' }}" required></label>
+    <label>예산 그룹<input name="budget_group" value="{{ item.budget_group or '' }}" placeholder="지출일 때 예: living"></label>
+    <label class="wide">내용<input name="description" value="{{ item.description or '' }}" required></label>
+    <label>금액<input type="number" min="0" name="amount" value="{{ item.amount }}" required></label>
+    <label>결제수단<input name="payment_method" value="{{ item.payment_method or '' }}" required></label>
+    <div class="wide form-actions">
+        <button class="button">저장</button>
+        <a class="button secondary" href="/transactions">취소</a>
+    </div>
+</form>
+{% endblock %}

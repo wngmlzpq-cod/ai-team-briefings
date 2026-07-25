@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}거래 관리 · J-OS{% endblock %}
+{% block content %}
+<section class="heading"><div><p class="eyebrow">TRANSACTIONS</p><h1>거래 관리</h1></div><a class="button" href="/transactions/new">+ 거래 등록</a></section>
+<form class="filters" method="get">
+    <label>연월<input type="month" name="month" value="{{ month_filter }}"></label>
+    <label>유형<select name="transaction_type"><option value="">전체</option><option value="income" {% if type_filter == "income" %}selected{% endif %}>수입</option><option value="expense" {% if type_filter == "expense" %}selected{% endif %}>지출</option></select></label>
+    <label>검색어<input name="keyword" value="{{ keyword_filter }}" placeholder="내용·카테고리"></label>
+    <button class="button">검색</button>
+</form>
+<section class="panel table-wrap">
+<table><thead><tr><th>날짜</th><th>유형</th><th>카테고리</th><th>내용</th><th>금액</th><th>결제수단</th><th>관리</th></tr></thead>
+<tbody>
+{% for item in items %}
+<tr><td>{{ item.date }}</td><td><b class="badge {{ item.type }}">{{ type_name(item.type) }}</b></td><td>{{ item.category or "미분류" }}</td><td>{{ item.description or "-" }}</td><td><strong>{{ won(item.amount) }}</strong></td><td>{{ item.payment_method or "-" }}</td><td class="actions"><a href="/transactions/{{ item.id }}/edit">수정</a><form method="post" action="/transactions/{{ item.id }}/delete" onsubmit="return confirm('삭제하시겠습니까?')"><button class="danger">삭제</button></form></td></tr>
+{% else %}<tr><td colspan="7" class="empty">검색 결과가 없습니다.</td></tr>{% endfor %}
+</tbody></table>
+</section>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}재무 · J-OS{% endblock %}
+{% block content %}
+<section class="heading">
+    <div><p class="eyebrow">FINANCE</p><h1>재무 대시보드</h1><p class="muted">{{ today.strftime("%Y년 %m월 %d일") }}</p></div>
+    <a class="button" href="/transactions/new">+ 거래 등록</a>
+</section>
+<section class="cards">
+    <article><span>오늘 수입</span><strong>{{ won(day.income) }}</strong></article>
+    <article><span>오늘 지출</span><strong>{{ won(day.expense) }}</strong></article>
+    <article><span>오늘 잔액</span><strong>{{ won(day.balance) }}</strong></article>
+</section>
+<section class="cards">
+    <article><span>이번 달 수입</span><strong>{{ won(month.income) }}</strong></article>
+    <article><span>이번 달 지출</span><strong>{{ won(month.expense) }}</strong></article>
+    <article><span>이번 달 잔액</span><strong>{{ won(month.balance) }}</strong></article>
+</section>
+<section class="panel">
+    <div class="panel-title"><h2>오늘의 기록</h2><a href="/transactions">전체 거래</a></div>
+    {% for item in today_items %}
+    <div class="transaction-row">
+        <div><b class="badge {{ item.type }}">{{ type_name(item.type) }}</b><strong>{{ item.category or "미분류" }}</strong><p>{{ item.description or "-" }}</p></div>
+        <strong>{{ won(item.amount) }}</strong>
+    </div>
+    {% else %}<p class="empty">오늘 기록이 없습니다.</p>{% endfor %}
+</section>
+{% endblock %}

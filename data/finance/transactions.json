@@ -6,10 +6,21 @@
       "type": "expense",
       "budget_group": "living",
       "category": "식비",
-      "description": "5.000",
-      "amount": 5000,
+      "description": "테스트",
+      "amount": 0,
       "payment_method": "현금",
       "created_at": "2026-07-25T11:24:18"
+    },
+    {
+      "id": "f711d0a1cffe4f19a0ba350e621675fe",
+      "date": "2026-07-26",
+      "type": "income",
+      "budget_group": null,
+      "category": "중고판매",
+      "description": "한화식권 판매",
+      "amount": 120000,
+      "payment_method": "현금",
+      "created_at": "2026-07-26T00:45:26"
     }
   ]
 }

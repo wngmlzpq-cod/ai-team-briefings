@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ team.name }} · J-OS{% endblock %}
+{% block content %}
+<section class="heading"><div><p class="eyebrow">AI TEAM DETAIL</p><h1>{{ team.name }}</h1><p class="muted">{{ team.purpose }}</p></div><a class="button secondary" href="/ai-team">AI 팀 전체</a></section>
+<section class="panel table-wrap">
+<table><thead><tr><th>보고서</th><th>수정 시각</th><th>크기</th></tr></thead>
+<tbody>
+{% for report in reports %}
+<tr><td><a class="text-link" href="/reports/view?path={{ report.relative_path }}">{{ report.name }}</a></td><td>{{ report.modified_at.strftime("%Y-%m-%d %H:%M") }}</td><td>{{ report.size }} bytes</td></tr>
+{% else %}<tr><td colspan="3" class="empty">보고서가 없습니다.</td></tr>{% endfor %}
+</tbody></table>
+</section>
+{% endblock %}

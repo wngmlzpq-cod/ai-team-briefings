@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ report_name }} · J-OS{% endblock %}
+{% block content %}
+<section class="heading"><div><p class="eyebrow">AI REPORT</p><h1>{{ report_name }}</h1><p class="muted">{{ report_path }}</p></div><a class="button secondary" href="/ai-team">AI 팀으로</a></section>
+<section class="panel"><pre class="report-content">{{ content }}</pre></section>
+{% endblock %}
