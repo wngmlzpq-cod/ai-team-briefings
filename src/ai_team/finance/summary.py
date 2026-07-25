@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 BUDGET_FILE = PROJECT_ROOT / "data" / "budget" / "monthly.json"
 TRANSACTIONS_FILE = PROJECT_ROOT / "data" / "finance" / "transactions.json"

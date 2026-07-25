@@ -1,3 +1,15 @@
 {
-  "transactions": []
+  "transactions": [
+    {
+      "id": "297beb1c05b54e7ba420a701f3486c3e",
+      "date": "2026-07-25",
+      "type": "expense",
+      "budget_group": "living",
+      "category": "식비",
+      "description": "5.000",
+      "amount": 5000,
+      "payment_method": "현금",
+      "created_at": "2026-07-25T11:24:18"
+    }
+  ]
 }
