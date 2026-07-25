@@ -1,0 +1,9 @@
+{
+  "budget_start_date": "2026-07-25",
+  "budget_reset_day": 1,
+  "prorate_first_month": true,
+  "include_start_date": true,
+  "carry_over_unused_budget": false,
+  "allow_over_budget_transactions": true,
+  "warning_threshold_percent": 80
+}
